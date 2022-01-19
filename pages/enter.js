@@ -81,7 +81,6 @@ function UsernameForm() {
     } else {
       setIsExp(false);
     }
-    setAvailable(false);
   }
 
   const reg = /^(&{1})([a-zA-Z]{1})([a-zA-Z0-9_]{3,20}$)/g;
