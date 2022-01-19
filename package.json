@@ -1,0 +1,28 @@
+{
+  "name": "fireship",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "firebase": "^9.6.2",
+    "global-clock": "^2.3.3",
+    "global-time": "^1.5.1",
+    "lodash": "^4.17.21",
+    "lodash.kebabcase": "^4.1.1",
+    "netlify": "^10.1.2",
+    "next": "^12.0.8",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-firebase-hooks": "^4.0.2",
+    "react-hot-toast": "^2.2.0",
+    "react-world-time": "^0.1.2"
+  },
+  "devDependencies": {
+    "eslint": "7",
+    "eslint-config-next": "12.0.7"
+  }
+}
