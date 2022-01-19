@@ -131,6 +131,7 @@ function UsernameForm() {
           value={inputValue}
           maxLength={20}
           required={true}
+          placeholder="&username  -- Write in this format starting with &"
         />
         {isExp ? (
           <p style={{ color: "green" }}>Correct Expression</p>
