@@ -81,6 +81,7 @@ function UsernameForm() {
     } else {
       setIsExp(false);
     }
+    setAvailable(false);
   }
 
   const reg = /^(&{1})([a-zA-Z]{1})([a-zA-Z0-9_]{3,20}$)/g;
@@ -94,16 +95,15 @@ function UsernameForm() {
       where("username", "==", inputValue)
     );
     await getDocs(queryResult).then((res) => {
-      if (res.docs.length == 0 && isExp) {
+      if (res.docs.length === 0 && isExp) {
         setAvailable(true);
         setIsExp(true);
       } else {
         setAvailable(false);
       }
     });
-
-    setAvailable(false);
   }
+  console.log(available);
 
   function handleEnter(e) {
     e.preventDefault();
