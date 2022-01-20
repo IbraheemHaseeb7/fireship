@@ -12,7 +12,7 @@ import { getUserWithUsername } from "../../lib/firebase";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../lib/firebase";
+import { auth, firestore } from "../../lib/firebase";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 
@@ -26,15 +26,14 @@ export async function getStaticProps(context) {
   let hearts = null;
 
   if (userDoc) {
-    const db = getFirestore();
-    await getDoc(doc(db, "usernames", username)).then((res) => {
+    await getDoc(doc(firestore, "usernames", username)).then((res) => {
       id = res.data();
     });
-    await getDoc(doc(db, `users/${id.uid}/posts`, slug)).then((res) => {
+    await getDoc(doc(firestore, `users/${id.uid}/posts`, slug)).then((res) => {
       post = res.data();
     });
     await getDocs(
-      collection(db, `users/${id.uid}/posts/${post.slug}/hearters`)
+      collection(firestore, `users/${id.uid}/posts/${post.slug}/hearters`)
     ).then((res) => {
       hearts = res.docs.map((data) => {
         return data.data();
@@ -55,8 +54,7 @@ export async function getStaticProps(context) {
 }
 
 export async function getStaticPaths() {
-  const db = getFirestore();
-  const querySnapshot = getDocs(collectionGroup(db, "posts"));
+  const querySnapshot = getDocs(collectionGroup(firestore, "posts"));
   let paths = null;
   await querySnapshot.then((res) => {
     paths = res.docs.map((data) => {
@@ -75,7 +73,6 @@ export async function getStaticPaths() {
 }
 
 function PostPage({ hearts, post, id }) {
-  const db = getFirestore();
   const [user] = useAuthState(auth);
   const router = useRouter();
   let [heart, setHeart] = useState();
@@ -93,12 +90,12 @@ function PostPage({ hearts, post, id }) {
 
   async function increaseHeart() {
     if (!heart) {
-      await getDoc(doc(db, "users", user.uid)).then((res) => {
+      await getDoc(doc(firestore, "users", user.uid)).then((res) => {
         mainUser = res.data().username;
       });
       await setDoc(
         doc(
-          db,
+          firestore,
           `users/${id.uid}/posts/${router.query.slug}/hearters`,
           mainUser
         ),
@@ -107,9 +104,12 @@ function PostPage({ hearts, post, id }) {
           username: mainUser,
         }
       );
-      await updateDoc(doc(db, `users/${id.uid}/posts`, router.query.slug), {
-        hearts: hearts?.length + 1,
-      });
+      await updateDoc(
+        doc(firestore, `users/${id.uid}/posts`, router.query.slug),
+        {
+          hearts: hearts?.length + 1,
+        }
+      );
       toast.success("You liked!");
       setHeart(true);
     }
