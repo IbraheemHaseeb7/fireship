@@ -7,19 +7,16 @@ import {
   collectionGroup,
   getDocs,
   getFirestore,
-  limit,
   query,
   where,
 } from "firebase/firestore";
 import PostFeed from "../components/PostFeed";
 
 export async function getServerSideProps(context) {
-  const LIMIT = 10;
   const db = getFirestore();
   const postsQuery = query(
     collectionGroup(db, "posts"),
-    where("published", "==", true),
-    limit(LIMIT)
+    where("published", "==", true)
   );
   let post;
   await getDocs(postsQuery).then((res) => {
