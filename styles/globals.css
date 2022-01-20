@@ -237,7 +237,7 @@ footer {
 .posts-main-container {
   width: 100%;
   display: grid;
-  grid-template-columns: 90% 10%;
+  grid-template-columns: 100%;
   justify-items: center;
   align-items: start;
 }
