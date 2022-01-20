@@ -58,8 +58,8 @@ export async function getStaticPaths() {
   let paths = null;
   await querySnapshot.then((res) => {
     paths = res.docs.map((data) => {
-      const { slugger, username } = data.data();
-      const slug = toString(slugger);
+      let { slug, username } = data.data();
+      slug = slug.toString();
       return {
         params: { username, slug },
       };
